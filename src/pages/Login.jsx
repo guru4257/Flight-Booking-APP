@@ -1,0 +1,104 @@
+import react,{useState,useContext} from 'react'
+import {Container,Row,Col,Form,FormGroup,Button} from 'reactstrap'
+import {Link,useNavigate} from 'react-router-dom'
+import '../styles/login.css'
+import loginImg from '../assests/images/login.png'
+import userIcon from '../assests/images/user.png'
+import {AuthContext} from './../components/context/AuthContext'
+import {BASE_URL} from './../utils/config'
+
+
+
+
+const Login = ()=>{
+
+    const [credentials,setCredentials] = useState({
+       email : undefined,
+       type : undefined,
+       password : undefined
+    })
+
+    
+    const {dispatch} = useContext(AuthContext)
+
+    const navigate = useNavigate()
+
+    const handleChange = e=>{
+        setCredentials(prev=>({...prev,[e.target.id]:e.target.value}))
+    }
+
+    const handleClick = async e=> {
+        e.preventDefault()
+        console.log(credentials)
+        dispatch({type:'LOGIN_START'})
+        try{
+
+            const res = await fetch(`${process.env.REACT_APP_URL}/api/v1/auth/login`,{
+                method : 'post',
+                headers : {
+                    'content-type' : 'application/json'
+                },
+                credentials:'include',
+                body : JSON.stringify(credentials)
+            })
+            const result = await res.json()
+            if(!res.ok) alert(result.message)
+            // console.log(result.data)
+    
+            dispatch({type:'LOGIN_SUCCESS', payload:result.data})
+            console.log(result.data.usertype)
+            if(result.data.usertype==='Admin'){
+                navigate('/admin/home')
+            }else{
+                navigate('/')
+            }
+        }catch(err){
+            dispatch({type:'LOGIN_START',payload:err.message})
+        }
+
+    }
+
+    return(
+        <section>
+            <Container>
+                <Row>
+                    
+                    <Col lg='8' className='m-auto'>
+                        <div className='login__container d-flex justify-content-between'>
+                            <div className='login__img'>
+                                <img src={loginImg} alt='' />
+                            </div>
+
+
+                            <div className='login__form'>
+                                <div className='user'>
+                                    <img src={userIcon} alt=''/>
+                                </div>
+                                <h2>Login</h2>
+                                <Form onSubmit={handleClick}>
+                                    <FormGroup>
+                                        <input type='email' placeholder='Email' required id='email' onChange={handleChange} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <select id="type" onChange={handleChange}>
+                                        <option>User Type</option>
+                                        <option>Admin</option>
+                                        <option>User</option>
+                                        </select>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <input type='password' placeholder='Password' required id='password' onChange={handleChange} />
+                                    </FormGroup>
+                                    <Button className='btn secondar__btn auth__btn' type='submit'> Login</Button>
+                                </Form>
+                                <p>Dont Have an Account?<Link to={'/register'}>Create</Link></p>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </section>
+    )
+}
+
+export default Login
