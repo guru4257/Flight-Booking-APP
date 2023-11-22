@@ -106,7 +106,7 @@ const Footer = ()=>{
                                             </span>
                                              Email:
                                         </h6>
-                                        <p className='mb-0'>sanjairagul.m2020it@sece.ac.in </p>
+                                        <p className='mb-0'>guruprasath4257@gmail.com </p>
                                     </ListGroupItem>
 
                                     <ListGroupItem className='ps-0 border-0 d-flex align-items-center gap-3'>
@@ -116,13 +116,13 @@ const Footer = ()=>{
                                             </span>
                                             Phone:
                                         </h6>
-                                        <p className='mb-0'>9791788116</p>
+                                        <p className='mb-0'>8056993814</p>
                                     </ListGroupItem>
 
                         </ListGroup>
                     </Col>
                     <Col className='text-center pt-5'>
-                        <p className='copyright'>Copyright {year} design and develop by Sanjai Ragul Murugesan. All Rights Reserved.</p>
+                        <p className='copyright'>Copyright {year} design and develop by Guruprasath M. All Rights Reserved.</p>
                     </Col>
                 </Row>
             </Container>
